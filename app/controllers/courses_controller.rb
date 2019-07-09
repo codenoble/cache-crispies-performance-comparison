@@ -7,9 +7,15 @@ class CoursesController < ApplicationController
   end
 
   def cache_crispies
-    cache_render(
-      CourseSerializer,
-      @courses
+    cache_render CourseSerializer, @courses
+  end
+
+  def fast_jsonapi
+    render(
+      json: FastCourseSerializer.new(
+        @courses,
+        include: [:slides]
+      )
     )
   end
 
