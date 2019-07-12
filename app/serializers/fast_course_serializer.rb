@@ -11,5 +11,5 @@ class FastCourseSerializer
   attribute(:created_at) { |obj| obj.created_at.iso8601 }
   attribute(:updated_at) { |obj| obj.updated_at.iso8601 }
 
-  has_many :slides, serializer: FastSlideSerializer
+  has_many :slides, serializer: FastSlideSerializer, if: Proc.new { |course| course.published? }
 end

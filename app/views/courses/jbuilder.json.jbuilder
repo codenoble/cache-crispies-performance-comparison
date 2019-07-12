@@ -5,7 +5,9 @@ json.courses @courses do |course|
   json.published  course.published
   json.created_at course.created_at.iso8601
   json.updated_at course.updated_at.iso8601
-  json.slides course.slides do |slide|
-    json.partial! 'slides/slide', slide: slide
+  if course.published?
+    json.slides course.slides do |slide|
+      json.partial! 'slides/slide', slide: slide
+    end
   end
 end

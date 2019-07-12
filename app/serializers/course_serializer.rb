@@ -7,7 +7,10 @@ class CourseSerializer < CacheCrispies::Base
     :created_at,
     :updated_at
   )
-  serialize :slides, with: SlideSerializer
+
+  show_if(->(course) { course.published? }) do
+    serialize :slides, with: SlideSerializer
+  end
 
   def created_at
     model.created_at.iso8601

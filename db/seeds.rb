@@ -9,7 +9,7 @@
   Course.create!(
     title: Faker::Company.bs,
     minutes: Faker::Number.number(2),
-    published: [true, false].sample,
+    published: [true, true, true, true, false].sample,
     slides: 5.times.map do |i|
       Slide.new(
         content: Faker::Hacker.say_something_smart,
