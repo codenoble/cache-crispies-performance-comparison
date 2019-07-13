@@ -119,6 +119,7 @@ Percentage of the requests served within a certain time (ms)
   99%   2953
  100%   2953 (longest request)
 ```
+_Note that caching is not enabled for these serializers, so there's no cheating going on there_
 
 ### Fast JSONAPI
 ```
