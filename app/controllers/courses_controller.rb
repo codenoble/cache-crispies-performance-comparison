@@ -10,6 +10,10 @@ class CoursesController < ApplicationController
     cache_render CourseSerializer, @courses
   end
 
+  def cache_crispies_cached
+    cache_render CourseCachedSerializer, @courses
+  end
+
   def fast_jsonapi
     render(
       json: FastCourseSerializer.new(

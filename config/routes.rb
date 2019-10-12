@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     collection do
       get 'jbuilder'
       get 'cache_crispies'
+      get 'cache_crispies_cached'
       get 'fast_jsonapi'
     end
   end

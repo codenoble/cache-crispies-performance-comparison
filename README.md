@@ -42,6 +42,7 @@ rails server -p 3042
 
 In another terminal window, run this command to warm up the Rails server.
 ```shell
+curl -s http://localhost:3042/courses/cache_crispies_cached > /dev/null
 curl -s http://localhost:3042/courses/cache_crispies > /dev/null
 curl -s http://localhost:3042/courses/fast_jsonapi > /dev/null
 curl -s http://localhost:3042/courses/jbuilder > /dev/null
@@ -49,32 +50,84 @@ curl -s http://localhost:3042/courses/jbuilder > /dev/null
 
 Run these commands to benchmark the requests to the different endpoints for each serializer
 
-**Cache Crispies**
+**Cache Crispies (cached)**
 ```shell
-ab -n 15 -c 3 "http://localhost:3042/courses/cache_crispies"
+ab -n 15 -c 1 "http://localhost:3042/courses/cache_crispies_cached"
+```
+
+**Cache Crispies (uncached)**
+```shell
+ab -n 15 -c 1 "http://localhost:3042/courses/cache_crispies"
 ```
 
 **Fast JSON API**
 ```shell
-ab -n 15 -c 3 "http://localhost:3042/courses/fast_jsonapi"
+ab -n 15 -c 1 "http://localhost:3042/courses/fast_jsonapi"
 ```
 
 **Jbuilder**
 ```shell
-ab -n 15 -c 3 "http://localhost:3042/courses/jbuilder"
+ab -n 15 -c 1 "http://localhost:3042/courses/jbuilder"
 ```
 
 Latest Results
 --------------
 
 Versions:
-- Ruby `2.5.3`
-- Rails `5.2.2`
-- cache_crispies `0.1.1`
+- Ruby `2.5.6`
+- Rails `6.0.0`
+- cache_crispies `1.0.1`
 - fast_jsonapi `1.5`
 - jbuilder `2.9.1`
 
-### Cache Crispies
+### Cache Crispies (cached)
+```
+This is ApacheBench, Version 2.3 <$Revision: 1826891 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking localhost (be patient).....done
+
+
+Server Software:
+Server Hostname:        localhost
+Server Port:            3042
+
+Document Path:          /courses/cache_crispies_cached
+Document Length:        887062 bytes
+
+Concurrency Level:      1
+Time taken for tests:   1.235 seconds
+Complete requests:      15
+Failed requests:        0
+Total transferred:      13312665 bytes
+HTML transferred:       13305930 bytes
+Requests per second:    12.14 [#/sec] (mean)
+Time per request:       82.350 [ms] (mean)
+Time per request:       82.350 [ms] (mean, across all concurrent requests)
+Transfer rate:          10524.76 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.0      0       0
+Processing:    55   82  23.5     76     162
+Waiting:       55   81  23.5     76     162
+Total:         56   82  23.5     76     162
+
+Percentage of the requests served within a certain time (ms)
+  50%     76
+  66%     77
+  75%     83
+  80%     87
+  90%     89
+  95%    162
+  98%    162
+  99%    162
+ 100%    162 (longest request)
+ ```
+_Note that caching is enabled for these serializers, so it's not really a fair comparison to the others below, but we're including it here anyway_
+
+### Cache Crispies (uncached)
 ```
 This is ApacheBench, Version 2.3 <$Revision: 1826891 $>
 Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
@@ -90,34 +143,34 @@ Server Port:            3042
 Document Path:          /courses/cache_crispies
 Document Length:        887062 bytes
 
-Concurrency Level:      3
-Time taken for tests:   10.990 seconds
+Concurrency Level:      1
+Time taken for tests:   7.741 seconds
 Complete requests:      15
 Failed requests:        0
 Total transferred:      13312665 bytes
 HTML transferred:       13305930 bytes
-Requests per second:    1.36 [#/sec] (mean)
-Time per request:       2197.982 [ms] (mean)
-Time per request:       732.661 [ms] (mean, across all concurrent requests)
-Transfer rate:          1182.96 [Kbytes/sec] received
+Requests per second:    1.94 [#/sec] (mean)
+Time per request:       516.065 [ms] (mean)
+Time per request:       516.065 [ms] (mean, across all concurrent requests)
+Transfer rate:          1679.46 [Kbytes/sec] received
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
 Connect:        0    0   0.0      0       0
-Processing:   654 1995 713.9   2215    2953
-Waiting:      653 1822 648.8   2058    2748
-Total:        654 1995 713.9   2215    2953
+Processing:   437  516  59.0    517     611
+Waiting:      436  515  59.1    517     611
+Total:        437  516  59.0    517     611
 
 Percentage of the requests served within a certain time (ms)
-  50%   2193
-  66%   2253
-  75%   2567
-  80%   2698
-  90%   2877
-  95%   2953
-  98%   2953
-  99%   2953
- 100%   2953 (longest request)
+  50%    510
+  66%    546
+  75%    572
+  80%    587
+  90%    588
+  95%    611
+  98%    611
+  99%    611
+ 100%    611 (longest request)
 ```
 _Note that caching is not enabled for these serializers, so there's no cheating going on there_
 
@@ -137,34 +190,34 @@ Server Port:            3042
 Document Path:          /courses/fast_jsonapi
 Document Length:        1255879 bytes
 
-Concurrency Level:      3
-Time taken for tests:   16.571 seconds
+Concurrency Level:      1
+Time taken for tests:   12.530 seconds
 Complete requests:      15
 Failed requests:        0
 Total transferred:      18844920 bytes
 HTML transferred:       18838185 bytes
-Requests per second:    0.91 [#/sec] (mean)
-Time per request:       3314.188 [ms] (mean)
-Time per request:       1104.729 [ms] (mean, across all concurrent requests)
-Transfer rate:          1110.57 [Kbytes/sec] received
+Requests per second:    1.20 [#/sec] (mean)
+Time per request:       835.350 [ms] (mean)
+Time per request:       835.350 [ms] (mean, across all concurrent requests)
+Transfer rate:          1468.71 [Kbytes/sec] received
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
 Connect:        0    0   0.0      0       0
-Processing:  1106 3111 773.5   3164    4430
-Waiting:     1100 2801 789.8   2911    4202
-Total:       1107 3111 773.5   3164    4430
+Processing:   769  835  50.7    863     897
+Waiting:      769  835  50.7    862     896
+Total:        770  835  50.7    863     897
 
 Percentage of the requests served within a certain time (ms)
-  50%   3068
-  66%   3466
-  75%   3784
-  80%   3784
-  90%   3814
-  95%   4430
-  98%   4430
-  99%   4430
- 100%   4430 (longest request)
+  50%    859
+  66%    874
+  75%    885
+  80%    889
+  90%    895
+  95%    897
+  98%    897
+  99%    897
+ 100%    897 (longest request)
 ```
 _Note that because Fast JSON API only supports the JSON:API standard, the exact format doesn't match the others. But all of the same data should still be included in the response._
 
@@ -184,34 +237,34 @@ Server Port:            3042
 Document Path:          /courses/jbuilder
 Document Length:        887062 bytes
 
-Concurrency Level:      3
-Time taken for tests:   42.800 seconds
+Concurrency Level:      1
+Time taken for tests:   16.607 seconds
 Complete requests:      15
 Failed requests:        0
 Total transferred:      13312665 bytes
 HTML transferred:       13305930 bytes
-Requests per second:    0.35 [#/sec] (mean)
-Time per request:       8559.961 [ms] (mean)
-Time per request:       2853.320 [ms] (mean, across all concurrent requests)
-Transfer rate:          303.75 [Kbytes/sec] received
+Requests per second:    0.90 [#/sec] (mean)
+Time per request:       1107.140 [ms] (mean)
+Time per request:       1107.140 [ms] (mean, across all concurrent requests)
+Transfer rate:          782.84 [Kbytes/sec] received
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
 Connect:        0    0   0.0      0       0
-Processing:  3526 7748 1591.7   8306    9322
-Waiting:     3525 7728 1587.3   8297    9320
-Total:       3526 7748 1591.7   8306    9322
+Processing:  1020 1107  75.8   1153    1198
+Waiting:     1019 1107  75.7   1152    1198
+Total:       1020 1107  75.8   1153    1198
 
 Percentage of the requests served within a certain time (ms)
-  50%   8147
-  66%   8506
-  75%   8755
-  80%   8793
-  90%   8927
-  95%   9322
-  98%   9322
-  99%   9322
- 100%   9322 (longest request)
+  50%   1150
+  66%   1161
+  75%   1177
+  80%   1182
+  90%   1197
+  95%   1198
+  98%   1198
+  99%   1198
+ 100%   1198 (longest request)
 ```
 
 Contributing
