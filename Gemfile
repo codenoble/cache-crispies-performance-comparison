@@ -34,7 +34,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'faker'
 
-gem 'cache_crispies', '~> 1.0.1'
+gem 'cache_crispies', '~> 1.1.2'
 
 gem 'fast_jsonapi'
 
