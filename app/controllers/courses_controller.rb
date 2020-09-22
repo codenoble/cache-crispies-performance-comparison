@@ -23,6 +23,10 @@ class CoursesController < ApplicationController
     )
   end
 
+  def blueprinter
+    render(json: CourseBlueprint.render_as_json(@courses))
+  end
+
   private
 
   def set_courses

@@ -38,6 +38,8 @@ gem 'cache_crispies', '~> 1.1.2'
 
 gem 'fast_jsonapi'
 
+gem 'blueprinter'
+
 gem 'redis'
 
 group :development, :test do
