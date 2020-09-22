@@ -40,6 +40,9 @@ gem 'fast_jsonapi'
 
 gem 'blueprinter'
 
+gem 'thread_safe'
+gem 'active_model_serializers', '~> 0.10.0'
+
 gem 'redis'
 
 group :development, :test do

@@ -27,6 +27,10 @@ class CoursesController < ApplicationController
     render(json: CourseBlueprint.render_as_json(@courses))
   end
 
+  def active_model_serializer
+    render json: @courses, each_serializer: CourseAmsSerializer, root: false
+  end
+
   private
 
   def set_courses

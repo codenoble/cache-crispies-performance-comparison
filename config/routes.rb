@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       get 'cache_crispies_cached'
       get 'fast_jsonapi'
       get 'blueprinter'
+      get 'active_model_serializer'
     end
   end
 end

@@ -75,6 +75,11 @@ ab -n 15 -c 1 "http://localhost:3042/courses/jbuilder"
 ab -n 15 -c 1 "http://localhost:3042/courses/blueprinter"
 ```
 
+**ActiveModelSerializers (0.10 with Attributes Adapter)**
+```shell
+ab -n 15 -c 1 "http://localhost:3042/courses/active_model_serializer"
+```
+
 Latest Results
 --------------
 
@@ -312,6 +317,52 @@ Percentage of the requests served within a certain time (ms)
   98%    822
   99%    822
  100%    822 (longest request)
+```
+
+### ActiveModelSerializers (0.10 with "Attributes Adapter")
+```
+This is ApacheBench, Version 2.3 <$Revision: 1843412 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking localhost (be patient).....done
+
+
+Server Software:
+Server Hostname:        localhost
+Server Port:            3042
+
+Document Path:          /courses/active_model_serializer
+Document Length:        929777 bytes
+
+Concurrency Level:      1
+Time taken for tests:   13.817 seconds
+Complete requests:      15
+Failed requests:        0
+Total transferred:      13953390 bytes
+HTML transferred:       13946655 bytes
+Requests per second:    1.09 [#/sec] (mean)
+Time per request:       921.155 [ms] (mean)
+Time per request:       921.155 [ms] (mean, across all concurrent requests)
+Transfer rate:          986.18 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.0      0       0
+Processing:   841  921  76.7    906    1040
+Waiting:      841  921  76.7    906    1040
+Total:        841  921  76.7    906    1041
+
+Percentage of the requests served within a certain time (ms)
+  50%    904
+  66%    985
+  75%    997
+  80%    999
+  90%   1034
+  95%   1041
+  98%   1041
+  99%   1041
+ 100%   1041 (longest request)
 ```
 
 Contributing
