@@ -8,7 +8,7 @@
 1_000.times do
   Course.create!(
     title: Faker::Company.bs,
-    minutes: Faker::Number.number(2),
+    minutes: Faker::Number.number(digits: 2),
     published: [true, true, true, true, false].sample,
     slides: 5.times.map do |i|
       Slide.new(
