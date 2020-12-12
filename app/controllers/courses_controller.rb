@@ -31,6 +31,10 @@ class CoursesController < ApplicationController
     render json: @courses, each_serializer: CourseAmsSerializer, root: false
   end
 
+  def panko_serializer
+    render json: Panko::ArraySerializer.new(@courses, each_serializer: PankoCourseSerializer).to_json
+  end
+
   private
 
   def set_courses

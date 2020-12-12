@@ -46,6 +46,9 @@ curl -s http://localhost:3042/courses/cache_crispies_cached > /dev/null
 curl -s http://localhost:3042/courses/cache_crispies > /dev/null
 curl -s http://localhost:3042/courses/fast_jsonapi > /dev/null
 curl -s http://localhost:3042/courses/jbuilder > /dev/null
+curl -s http://localhost:3042/courses/blueprinter > /dev/null
+curl -s http://localhost:3042/courses/active_model_serializer > /dev/null
+curl -s http://localhost:3042/courses/panko_serializer > /dev/null
 ```
 
 Run these commands to benchmark the requests to the different endpoints for each serializer
@@ -80,15 +83,21 @@ ab -n 15 -c 1 "http://localhost:3042/courses/blueprinter"
 ab -n 15 -c 1 "http://localhost:3042/courses/active_model_serializer"
 ```
 
+**PankoSerializer**
+```shell
+ab -n 15 -c 1 "http://localhost:3042/courses/panko_serializer"
+```
+
 Latest Results
 --------------
 
 Versions:
-- Ruby `2.5.6`
-- Rails `6.0.0`
-- cache_crispies `1.0.1`
+- Ruby `2.7.2`
+- Rails `6.0.3.4`
+- cache_crispies `1.1.3`
 - fast_jsonapi `1.5`
 - jbuilder `2.9.1`
+- panko_serializer `0.7.4`
 
 ### Cache Crispies (cached)
 ```
@@ -99,85 +108,88 @@ Licensed to The Apache Software Foundation, http://www.apache.org/
 Benchmarking localhost (be patient).....done
 
 
-Server Software:
+Server Software:        
 Server Hostname:        localhost
 Server Port:            3042
 
 Document Path:          /courses/cache_crispies_cached
-Document Length:        890509 bytes
+Document Length:        886551 bytes
 
 Concurrency Level:      1
-Time taken for tests:   1.045 seconds
+Time taken for tests:   1.164 seconds
 Complete requests:      15
 Failed requests:        0
-Total transferred:      13364370 bytes
-HTML transferred:       13357635 bytes
-Requests per second:    14.35 [#/sec] (mean)
-Time per request:       69.677 [ms] (mean)
-Time per request:       69.677 [ms] (mean, across all concurrent requests)
-Transfer rate:          12487.27 [Kbytes/sec] received
+Total transferred:      13305000 bytes
+HTML transferred:       13298265 bytes
+Requests per second:    12.89 [#/sec] (mean)
+Time per request:       77.589 [ms] (mean)
+Time per request:       77.589 [ms] (mean, across all concurrent requests)
+Transfer rate:          11164.15 [Kbytes/sec] received
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
 Connect:        0    0   0.0      0       0
-Processing:    63   69  10.0     66      95
-Waiting:       63   69  10.0     65      95
-Total:         64   70  10.0     66      95
+Processing:    63   77  17.1     74     129
+Waiting:       62   77  17.1     74     128
+Total:         63   78  17.1     75     129
 
 Percentage of the requests served within a certain time (ms)
-  50%     66
-  66%     66
-  75%     70
-  80%     71
-  90%     92
-  95%     95
-  98%     95
-  99%     95
- 100%     95 (longest request)
+  50%     71
+  66%     79
+  75%     80
+  80%     91
+  90%     94
+  95%    129
+  98%    129
+  99%    129
+ 100%    129 (longest request)
  ```
 _Note that caching is enabled for these serializers, so it's not really a fair comparison to the others below, but we're including it here anyway_
 
 ### Cache Crispies (uncached)
 ```
-This is ApacheBench, Version 2.3 <$Revision: 1826891 $>
+This is ApacheBench, Version 2.3 <$Revision: 1843412 $>
 Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
 Licensed to The Apache Software Foundation, http://www.apache.org/
 
-Server Software:
+Benchmarking localhost (be patient).....done
+
+
+Server Software:        
 Server Hostname:        localhost
 Server Port:            3042
 
 Document Path:          /courses/cache_crispies
-Document Length:        890509 bytes
+Document Length:        905763 bytes
 
 Concurrency Level:      1
-Time taken for tests:   7.680 seconds
+Time taken for tests:   9.221 seconds
 Complete requests:      15
 Failed requests:        0
-Total transferred:      13364370 bytes
-HTML transferred:       13357635 bytes
-Requests per second:    1.95 [#/sec] (mean)
-Time per request:       511.986 [ms] (mean)
-Time per request:       511.986 [ms] (mean, across all concurrent requests)
-Transfer rate:          1699.41 [Kbytes/sec] received
+Total transferred:      13593180 bytes
+HTML transferred:       13586445 bytes
+Requests per second:    1.63 [#/sec] (mean)
+Time per request:       614.764 [ms] (mean)
+Time per request:       614.764 [ms] (mean, across all concurrent requests)
+Transfer rate:          1439.53 [Kbytes/sec] received
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
 Connect:        0    0   0.0      0       0
-Processing:   399  512  63.8    542     596
-Waiting:      399  511  63.8    542     596
-Total:        399  512  63.8    542     596
+Processing:   562  615  19.0    615     640
+Waiting:      561  614  19.0    614     639
+Total:        562  615  19.0    615     640
 
 Percentage of the requests served within a certain time (ms)
-  50%    539
-  66%    550
-  75%    563
-  80%    577
-  90%    593
-  95%    596
-  98%    596
-  99%    596
- 100%    596 (longest request)
+  50%    613
+  66%    619
+  75%    631
+  80%    635
+  90%    637
+  95%    640
+  98%    640
+  99%    640
+ 100%    640 (longest request)
 ```
 _Note that caching is not enabled for these serializers, so there's no cheating going on there_
 
@@ -190,41 +202,41 @@ Licensed to The Apache Software Foundation, http://www.apache.org/
 Benchmarking localhost (be patient).....done
 
 
-Server Software:
+Server Software:        
 Server Hostname:        localhost
 Server Port:            3042
 
 Document Path:          /courses/fast_jsonapi
-Document Length:        1258072 bytes
+Document Length:        1282240 bytes
 
 Concurrency Level:      1
-Time taken for tests:   12.196 seconds
+Time taken for tests:   15.604 seconds
 Complete requests:      15
 Failed requests:        0
-Total transferred:      18877815 bytes
-HTML transferred:       18871080 bytes
-Requests per second:    1.23 [#/sec] (mean)
-Time per request:       813.083 [ms] (mean)
-Time per request:       813.083 [ms] (mean, across all concurrent requests)
-Transfer rate:          1511.56 [Kbytes/sec] received
+Total transferred:      19240335 bytes
+HTML transferred:       19233600 bytes
+Requests per second:    0.96 [#/sec] (mean)
+Time per request:       1040.287 [ms] (mean)
+Time per request:       1040.287 [ms] (mean, across all concurrent requests)
+Transfer rate:          1204.12 [Kbytes/sec] received
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
-Connect:        0    0   0.1      0       0
-Processing:   799  813  11.5    814     834
-Waiting:      798  812  11.5    813     834
-Total:        799  813  11.5    814     834
+Connect:        0    0   0.0      0       0
+Processing:   922 1040 108.8   1026    1364
+Waiting:      922 1039 108.8   1025    1363
+Total:        923 1040 108.8   1026    1364
 
 Percentage of the requests served within a certain time (ms)
-  50%    813
-  66%    815
-  75%    823
-  80%    824
-  90%    832
-  95%    834
-  98%    834
-  99%    834
- 100%    834 (longest request)
+  50%   1018
+  66%   1047
+  75%   1062
+  80%   1081
+  90%   1164
+  95%   1364
+  98%   1364
+  99%   1364
+ 100%   1364 (longest request)
 ```
 _Note that because Fast JSON API only supports the JSON:API standard, the exact format doesn't match the others. But all of the same data should still be included in the response._
 
@@ -237,40 +249,41 @@ Licensed to The Apache Software Foundation, http://www.apache.org/
 Benchmarking localhost (be patient).....done
 
 
-Server Software:
+Server Software:        
 Server Hostname:        localhost
 Server Port:            3042
 
 Document Path:          /courses/jbuilder
-Document Length:        890509 bytes
+Document Length:        905763 bytes
 
 Concurrency Level:      1
-Time taken for tests:   17.045 seconds
+Time taken for tests:   25.196 seconds
 Complete requests:      15
 Failed requests:        0
-Total transferred:      13364370 bytes
-HTML transferred:       13357635 bytes
-Requests per second:    0.88 [#/sec] (mean)
-Time per request:       1136.317 [ms] (mean)
-Time per request:       1136.317 [ms] (mean, across all concurrent requests)
-Transfer rate:          765.70 [Kbytes/sec] received
+Total transferred:      13593180 bytes
+HTML transferred:       13586445 bytes
+Requests per second:    0.60 [#/sec] (mean)
+Time per request:       1679.711 [ms] (mean)
+Time per request:       1679.711 [ms] (mean, across all concurrent requests)
+Transfer rate:          526.86 [Kbytes/sec] received
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
 Connect:        0    0   0.0      0       0
-Processing:   993 1136 162.5   1049    1378
-Waiting:      993 1136 162.5   1049    1377
-Total:        993 1136 162.5   1049    1378
+Processing:  1546 1680 130.2   1637    2006
+Waiting:     1546 1679 130.2   1636    2005
+Total:       1546 1680 130.2   1637    2006
 
 Percentage of the requests served within a certain time (ms)
-  50%   1049
-  66%   1077
-  75%   1348
-  80%   1355
-  90%   1362
-  95%   1378
-  98%   1378
-  99%   1378
+  50%   1635
+  66%   1642
+  75%   1748
+  80%   1790
+  90%   1894
+  95%   2006
+  98%   2006
+  99%   2006
+ 100%   2006 (longest request)
 ```
 
 ### Blueprinter
@@ -282,41 +295,41 @@ Licensed to The Apache Software Foundation, http://www.apache.org/
 Benchmarking localhost (be patient).....done
 
 
-Server Software:
+Server Software:        
 Server Hostname:        localhost
 Server Port:            3042
 
 Document Path:          /courses/blueprinter
-Document Length:        890497 bytes
+Document Length:        905751 bytes
 
 Concurrency Level:      1
-Time taken for tests:   9.779 seconds
+Time taken for tests:   13.965 seconds
 Complete requests:      15
 Failed requests:        0
-Total transferred:      13364190 bytes
-HTML transferred:       13357455 bytes
-Requests per second:    1.53 [#/sec] (mean)
-Time per request:       651.904 [ms] (mean)
-Time per request:       651.904 [ms] (mean, across all concurrent requests)
-Transfer rate:          1334.65 [Kbytes/sec] received
+Total transferred:      13593000 bytes
+HTML transferred:       13586265 bytes
+Requests per second:    1.07 [#/sec] (mean)
+Time per request:       931.017 [ms] (mean)
+Time per request:       931.017 [ms] (mean, across all concurrent requests)
+Transfer rate:          950.53 [Kbytes/sec] received
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
 Connect:        0    0   0.0      0       0
-Processing:   517  652  85.0    646     822
-Waiting:      517  651  85.0    645     821
-Total:        517  652  85.0    646     822
+Processing:   791  931  98.1    935    1123
+Waiting:      790  930  97.2    935    1115
+Total:        791  931  98.1    935    1123
 
 Percentage of the requests served within a certain time (ms)
-  50%    634
-  66%    659
-  75%    729
-  80%    752
-  90%    762
-  95%    822
-  98%    822
-  99%    822
- 100%    822 (longest request)
+  50%    925
+  66%    957
+  75%    994
+  80%   1024
+  90%   1093
+  95%   1123
+  98%   1123
+  99%   1123
+ 100%   1123 (longest request)
 ```
 
 ### ActiveModelSerializers (0.10 with "Attributes Adapter")
@@ -328,41 +341,87 @@ Licensed to The Apache Software Foundation, http://www.apache.org/
 Benchmarking localhost (be patient).....done
 
 
-Server Software:
+Server Software:        
 Server Hostname:        localhost
 Server Port:            3042
 
 Document Path:          /courses/active_model_serializer
-Document Length:        929777 bytes
+Document Length:        945951 bytes
 
 Concurrency Level:      1
-Time taken for tests:   13.817 seconds
+Time taken for tests:   20.992 seconds
 Complete requests:      15
 Failed requests:        0
-Total transferred:      13953390 bytes
-HTML transferred:       13946655 bytes
-Requests per second:    1.09 [#/sec] (mean)
-Time per request:       921.155 [ms] (mean)
-Time per request:       921.155 [ms] (mean, across all concurrent requests)
-Transfer rate:          986.18 [Kbytes/sec] received
+Total transferred:      14196000 bytes
+HTML transferred:       14189265 bytes
+Requests per second:    0.71 [#/sec] (mean)
+Time per request:       1399.443 [ms] (mean)
+Time per request:       1399.443 [ms] (mean, across all concurrent requests)
+Transfer rate:          660.42 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.1      0       0
+Processing:  1244 1399 142.8   1379    1701
+Waiting:     1243 1399 142.8   1378    1700
+Total:       1244 1399 142.8   1379    1701
+
+Percentage of the requests served within a certain time (ms)
+  50%   1375
+  66%   1392
+  75%   1472
+  80%   1524
+  90%   1689
+  95%   1701
+  98%   1701
+  99%   1701
+ 100%   1701 (longest request)
+```
+
+### PankoSerializers
+```
+This is ApacheBench, Version 2.3 <$Revision: 1843412 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking localhost (be patient).....done
+
+
+Server Software:        
+Server Hostname:        localhost
+Server Port:            3042
+
+Document Path:          /courses/panko_serializer
+Document Length:        1087567 bytes
+
+Concurrency Level:      1
+Time taken for tests:   7.400 seconds
+Complete requests:      15
+Failed requests:        0
+Total transferred:      16320240 bytes
+HTML transferred:       16313505 bytes
+Requests per second:    2.03 [#/sec] (mean)
+Time per request:       493.315 [ms] (mean)
+Time per request:       493.315 [ms] (mean, across all concurrent requests)
+Transfer rate:          2153.83 [Kbytes/sec] received
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
 Connect:        0    0   0.0      0       0
-Processing:   841  921  76.7    906    1040
-Waiting:      841  921  76.7    906    1040
-Total:        841  921  76.7    906    1041
+Processing:   424  493  49.2    496     638
+Waiting:      423  493  49.2    495     637
+Total:        424  493  49.2    496     638
 
 Percentage of the requests served within a certain time (ms)
-  50%    904
-  66%    985
-  75%    997
-  80%    999
-  90%   1034
-  95%   1041
-  98%   1041
-  99%   1041
- 100%   1041 (longest request)
+  50%    493
+  66%    502
+  75%    505
+  80%    507
+  90%    537
+  95%    638
+  98%    638
+  99%    638
+ 100%    638 (longest request)
 ```
 
 Contributing
