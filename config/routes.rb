@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       get 'fast_jsonapi'
       get 'blueprinter'
       get 'active_model_serializer'
+      get 'panko_serializer'
     end
   end
 end
